@@ -1,2 +1,2 @@
 #BariumBlochCode
-Barium Bloch code...
+Barium Bloch code for 8 levels
