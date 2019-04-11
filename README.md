@@ -1,2 +1,2 @@
-#Barium Bloch Code
+#BariumBlochCode
 Barium Bloch code...
