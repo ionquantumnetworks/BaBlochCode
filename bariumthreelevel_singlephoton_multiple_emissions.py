@@ -15,7 +15,7 @@ from pylab import *
 
 
 #Turn on or off coupling between separate ions 0=off 1=on
-coupling=0
+coupling=1
 
 ###### Defining Atomic Constants and Laser Parameters ###########
 #units MHz -> time units us
@@ -24,7 +24,7 @@ d12 = 0*(2*np.pi)
 d23 = 0*(2*np.pi)
 #rabi frequencies
 Om12 = 0*(2*np.pi)
-Om23 = 5.3*(2*np.pi)*(100)
+Om23 = 5.3*(2*np.pi)*(2)
 #natural decay rate
 g12 = 2*np.pi*15.1
 g23 = 2*np.pi*5.3
@@ -93,9 +93,9 @@ H = d12*sig11 + Om12/2*(sig12+sig21)+ d23*sig33 + Om23/2*(sig23+sig32) \
     + d12*sig44 + Om12/2*(sig45+sig54)+ d23*sig66 + Om23/2*(sig56+sig65)
 
 ######## evaluate populations as a function of time ############
-tlist = np.linspace(0,1,10000) #gives times of evaluation (start, stop, # of steps)
+tlist = np.linspace(0,0.2,10000) #gives times of evaluation (start, stop, # of steps)
 
-rho_initial = sig11 * 0 + sig22 * 1 + sig33 * 0 #Initial state of density matrix
+rho_initial = sig11 * 0 + sig22 * 0 + sig33 * 1 #Initial state of density matrix
 
 pop = mesolve(H,rho_initial,tlist,c_ops,[sig11,sig22,sig33,sig44,sig55,sig66]) #solve system for times given by t list
 
@@ -103,7 +103,7 @@ pop = mesolve(H,rho_initial,tlist,c_ops,[sig11,sig22,sig33,sig44,sig55,sig66]) #
 plt.plot(tlist,pop.expect[1], label='P State 1')
 #plt.plot(tlist,pop.expect[2], label='D State 1')
 #plt.plot(tlist,pop.expect[3], label='S State 2')
-plt.plot(tlist-.009,pop.expect[4]*7, label='P State 2')
+plt.plot(tlist,pop.expect[4]*1, label='P State 2')
 plt.plot(tlist,pop.expect[4]+pop.expect[1], label='P State Sum')
 #plt.plot(tlist,pop.expect[5], label='D State 2')
 plt.legend()
