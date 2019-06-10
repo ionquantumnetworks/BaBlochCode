@@ -96,7 +96,7 @@ psi0 = basis(4,0)
 A = 2*sc.pi*0.01  # sweep rate
 DeltaQinitial = -2*sc.pi*0.5 #Initial 1762 laser detuning
 tstart = DeltaQinitial/A
-tlist = np.linspace(tstart, -tstart, 1000) #List of points for plotting purposes
+tlist = np.linspace(tstart, -1*tstart, 300) #List of points for plotting purposes
 
 ##Decays and dissipations
 C21 = np.sqrt(gamma21) * sig12 #Decay from |2> to |1>
@@ -127,13 +127,13 @@ if singlePlot == 1:
 if singlePlot == 0:
     yr = []
     xr = []
-    A = 2*sc.pi*0.0001  # sweep rate
+    A = 2*sc.pi*0.00001  # sweep rate
     start_time = time.time()
-    while A < 2*sc.pi*0.05:
+    while A < 2*sc.pi*0.3:
         p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
         yr.append(np.real(p_ex)[-1])
         xr.append(A/(2*sc.pi))
-        A += 2*sc.pi*0.0005
+        A += 2*sc.pi*0.2*A
     print('time elapsed = ' + str(time.time() - start_time))    
     fig, ax = plt.subplots(figsize=(12,8))
     ax.semilogx(xr, yr, 'ro',)
