@@ -93,7 +93,7 @@ sig44 = basis(4,3) * basis(4,3).dag()
 ##Initial state of system  
 psi0 = basis(4,0)
 
-A = 2*sc.pi*0.005  # sweep rate
+A = 2*sc.pi*0.01  # sweep rate
 DeltaQinitial = -2*sc.pi*0.5 #Initial 1762 laser detuning
 tstart = DeltaQinitial/A
 tlist = np.linspace(tstart, -tstart, 1000) #List of points for plotting purposes
@@ -106,18 +106,37 @@ Clg = np.sqrt(2*gammalg) * sig11 #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * sig33 #From 650 laser linewidth
 ClQ = np.sqrt(2*gammalQ) * sig44 #From 1762 laser linewidth
 
-start_time = time.time()
-p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
-print('time elapsed = ' + str(time.time() - start_time))
-LZ= 1 - np.exp(-np.pi * Om14 **2 / (2 * A))
-print('Landau-Zener Aprroximation: ' + str(LZ))
-print('Hamiltonian Evolution: '+ str(np.real(p_ex)[-1]))
+singlePlot = 0
 
-fig, ax = plt.subplots(figsize=(12,8))
-ax.plot(tlist, np.real(p_ex), 'b', tlist, np.real(1-p_ex), 'r')
-ax.plot(tlist, LZ * np.ones(shape(tlist)), 'g')
-ax.set_xlabel('Time')
-ax.set_ylabel('Occupation probability')
-ax.set_title('Landau-Zener transition')
-ax.legend(("Excited state", "Ground state", "Landau-Zener formula"), loc=0);
-#    n = mesolve(H, psi0, tlist, c_ops, e_ops)
+if singlePlot == 1:
+    start_time = time.time()
+    p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
+    print('time elapsed = ' + str(time.time() - start_time))
+    LZ= 1 - np.exp(-np.pi * Om14 **2 / (2 * A))
+    print('Landau-Zener Aprroximation: ' + str(LZ))
+    print('Hamiltonian Evolution: '+ str(np.real(p_ex)[-1]))
+    
+    fig, ax = plt.subplots(figsize=(12,8))
+    ax.plot(tlist, np.real(p_ex), 'b', tlist, np.real(1-p_ex), 'r')
+    ax.plot(tlist, LZ * np.ones(shape(tlist)), 'g')
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Occupation probability')
+    ax.set_title('Landau-Zener transition')
+    ax.legend(("Excited state", "Ground state", "Landau-Zener formula"), loc=0);
+
+if singlePlot == 0:
+    yr = []
+    xr = []
+    A = 2*sc.pi*0.0001  # sweep rate
+    start_time = time.time()
+    while A < 2*sc.pi*0.05:
+        p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
+        yr.append(np.real(p_ex)[-1])
+        xr.append(A/(2*sc.pi))
+        A += 2*sc.pi*0.0005
+    print('time elapsed = ' + str(time.time() - start_time))    
+    fig, ax = plt.subplots(figsize=(12,8))
+    ax.semilogx(xr, yr, 'ro',)
+    ax.set_xlabel('Sweep Rate')
+    ax.set_ylabel('Transfer Efficiency')
+    ax.set_title('Landau-Zener transition');
