@@ -93,7 +93,10 @@ sig44 = basis(4,3) * basis(4,3).dag()
 ##Initial state of system  
 psi0 = basis(4,0)
 
-A = 2*sc.pi*0.004  # sweep rate
+A = 2*sc.pi*0.005  # sweep rate
+DeltaQinitial = -2*sc.pi*0.5 #Initial 1762 laser detuning
+tstart = DeltaQinitial/A
+tlist = np.linspace(tstart, -tstart, 1000) #List of points for plotting purposes
 
 ##Decays and dissipations
 C21 = np.sqrt(gamma21) * sig12 #Decay from |2> to |1>
@@ -103,7 +106,6 @@ Clg = np.sqrt(2*gammalg) * sig11 #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * sig33 #From 650 laser linewidth
 ClQ = np.sqrt(2*gammalQ) * sig44 #From 1762 laser linewidth
 
-tlist = np.linspace(-125, 125, 1000) #List of points for plotting purposes
 start_time = time.time()
 p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
 print('time elapsed = ' + str(time.time() - start_time))
