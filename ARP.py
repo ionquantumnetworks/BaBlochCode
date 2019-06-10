@@ -23,11 +23,8 @@ kHz = 1*10**3
 ns = 1*10**-9
 us = 1*10**-6
 
-#times
-tlist = np.linspace(0, 1*us, 1000) #List of points for plotting purposes
-
 #ARP settings
-SweepWidth = 2*MHz
+SweepWidth = 4*MHz
 SweepRate = 0.001*kHz
 
 #Laser Detunings -2*sc.pi*
@@ -100,10 +97,13 @@ c_ops = [C21,C23,C41,Clg,Clr,ClQ]
 # initialise plot and line
 x = []
 y = []
-plt.ion()
-fig = plt.figure()
-ax = fig.add_subplot(111)
-line1, = ax.plot(x, y, 'b-') 
+#plt.ion()
+#fig = plt.figure()
+#ax = fig.add_subplot(111)
+#line1, = ax.plot(x, y, 'b-') 
+
+#times
+tlist = np.linspace(0.0*us, 5.1*us, 1000) #List of points for plotting purposes
 
 while DeltaQ < SweepWidth:
     H = (Deltag*sig11 + 0.5*Om12*sig12 + 0.5*Om14*sig14 + 0.5*Om12*sig21 + 0.5*Om23*sig23 + 0.5*Om23*sig32 + Deltar*sig33 + 0.5*Om14*sig41 + DeltaQ*sig44)
