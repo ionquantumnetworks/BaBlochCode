@@ -61,7 +61,7 @@ DeltaQ= -2*sc.pi*0 #detuning of 1762 laser
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
 Om23 = 2*sc.pi*0 #Rabi frequency of |2> to |3>
-Om14 = 2*sc.pi*0.2 #Rabi frequency of |1> to |4>
+Om14 = 2*sc.pi*0.043 #Rabi frequency of |1> to |4>
 
 #Decay rates
 gamma21 =  0#2*sc.pi*15.1*MHz #Decay rate of |2> to |1>
@@ -71,7 +71,7 @@ gamma41 =  2*sc.pi*10.1*10**-9 #Decay rate of |4> to |1> used a lifetime of 31.2
 #Laser Linewidths
 gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
-gammalQ = 2*sc.pi*0.00 #1762 laser linewidth
+gammalQ = 2*sc.pi*0.00018 #1762 laser linewidth
 
 #Operators between |n> and |m> 
 sig11 = basis(4,0) * basis(4,0).dag()
@@ -93,7 +93,7 @@ sig44 = basis(4,3) * basis(4,3).dag()
 ##Initial state of system  
 psi0 = basis(4,0)
 
-A = 2*sc.pi*0.1   # sweep rate
+A = 2*sc.pi*0.004  # sweep rate
 
 ##Decays and dissipations
 C21 = np.sqrt(gamma21) * sig12 #Decay from |2> to |1>
@@ -103,12 +103,13 @@ Clg = np.sqrt(2*gammalg) * sig11 #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * sig33 #From 650 laser linewidth
 ClQ = np.sqrt(2*gammalQ) * sig44 #From 1762 laser linewidth
 
-tlist = np.linspace(-100, 100, 1000) #List of points for plotting purposes
+tlist = np.linspace(-125, 125, 1000) #List of points for plotting purposes
 start_time = time.time()
 p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
 print('time elapsed = ' + str(time.time() - start_time))
 LZ= 1 - np.exp(-np.pi * Om14 **2 / (2 * A))
-print(LZ)
+print('Landau-Zener Aprroximation: ' + str(LZ))
+print('Hamiltonian Evolution: '+ str(np.real(p_ex)[-1]))
 
 fig, ax = plt.subplots(figsize=(12,8))
 ax.plot(tlist, np.real(p_ex), 'b', tlist, np.real(1-p_ex), 'r')
