@@ -93,7 +93,9 @@ H = d12*sig11 + Om12/2*(sig12+sig21)+ d23*sig33 + Om23/2*(sig23+sig32) \
     + d12*sig44 + Om12/2*(sig45+sig54)+ d23*sig66 + Om23/2*(sig56+sig65)
 
 ######## evaluate populations as a function of time ############
-tlist = np.linspace(0,.1,10000) #gives times of evaluation (start, stop, # of steps)
+tmax = 1 #microseconds
+tstep = 10000
+tlist = np.linspace(0,tmax,tstep) #gives times of evaluation (start, stop, # of steps)
 
 rho_initial = sig11 * 0 + sig22 * 1 + sig33 * 0 #Initial state of density matrix
 
@@ -121,8 +123,12 @@ show()
 #show()
 
 
-plt.plot(np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
-plt.xlim(0,1000)
+plt.plot(np.linspace(0,tstep/tmax/2/np.pi,tstep),np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
+plt.xlim(0,50)
 show()
-print(np.absolute(np.fft.fft(pop.expect[1]))[0])
-print(g12)
+plt.plot(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
+plt.xlim(-0,50)
+show()
+#print(len(pop.expect[1]))
+#print(np.fft.fft((pop.expect[1])))
+#print(np.linspace(0,tstep/tmax))
