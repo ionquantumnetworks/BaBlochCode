@@ -12,6 +12,8 @@ from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 from pylab import *
+import csv
+import operator
 
 
 #Turn on or off coupling between separate ions 0=off 1=on
@@ -127,7 +129,13 @@ plt.plot(np.linspace(0,tstep/tmax/2/np.pi,tstep),np.absolute(np.fft.fft(pop.expe
 plt.xlim(0,50)
 show()
 plt.plot(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
-plt.xlim(-0,50)
+plt.xlim(-50,50)
+show()
+
+spectrum=list(zip(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0]))
+print(spectrum[0])
+spectrum.sort(key=operator.itemgetter(0))
+print(spectrum[0])
 show()
 #print(len(pop.expect[1]))
 #print(np.fft.fft((pop.expect[1])))
