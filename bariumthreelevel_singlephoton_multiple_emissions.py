@@ -12,9 +12,13 @@ from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 from pylab import *
+<<<<<<< HEAD
 import csv
 import operator
 
+=======
+import operator
+>>>>>>> 4874dceb555a9b31bd2af6a70a137c4c682508a7
 
 #Turn on or off coupling between separate ions 0=off 1=on
 coupling=1
@@ -26,13 +30,13 @@ d12 = 0*(2*np.pi)
 d23 = 0*(2*np.pi)
 #rabi frequencies
 Om12 = 0*(2*np.pi)
-Om23 = 5.3*(2*np.pi)*(0)
+Om23 = 5.3*(2*np.pi)*(10)
 #natural decay rate
 g12 = 2*np.pi*15.1
 g23 = 2*np.pi*5.3
 #laser linewidths
 l12 = 0*np.pi*2
-l23 = 0*np.pi*2
+l23 = 1*np.pi*2
 ##################################################################
 
 ######################Setting up Hamiltonian######################
@@ -99,7 +103,7 @@ tmax = 1 #microseconds
 tstep = 10000
 tlist = np.linspace(0,tmax,tstep) #gives times of evaluation (start, stop, # of steps)
 
-rho_initial = sig11 * 0 + sig22 * 1 + sig33 * 0 #Initial state of density matrix
+rho_initial = sig11 * 0 + sig22 * 0 + sig33 * 1 #Initial state of density matrix
 
 pop = mesolve(H,rho_initial,tlist,c_ops,[sig11,sig22,sig33,sig44,sig55,sig66]) #solve system for times given by t list
 
@@ -111,7 +115,6 @@ plt.plot(tlist,pop.expect[4]*1, label='P State 2')
 plt.plot(tlist,pop.expect[4]+pop.expect[1], label='P State Sum')
 #plt.plot(tlist,pop.expect[5], label='D State 2')
 plt.legend()
-plt.xlim(0,.04)
 show()
 
 #plt.plot(tlist,pop.expect[0], label='S State 1')
@@ -125,17 +128,24 @@ show()
 #show()
 
 
-plt.plot(np.linspace(0,tstep/tmax/2/np.pi,tstep),np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
-plt.xlim(0,50)
-show()
-plt.plot(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
-plt.xlim(-50,50)
+#plt.plot(np.linspace(0,tstep/tmax/2/np.pi,tstep),np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
+#plt.xlim(0,50)
+#show()
+#plt.plot(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0])
+#plt.xlim(-50,50)
+#show()
+
+spectrum=list(zip(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi/tmax,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0]))
+spectrum.sort(key=operator.itemgetter(0))
+a,b=zip(*spectrum)
+
+plt.plot(a,b)
+plt.xlim(-500,500)
 show()
 
-spectrum=list(zip(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0]))
-print(spectrum[0])
-spectrum.sort(key=operator.itemgetter(0))
-print(spectrum[0])
+plt.plot(a,b)
+plt.xlim(-5,5)
+
 show()
 #print(len(pop.expect[1]))
 #print(np.fft.fft((pop.expect[1])))
