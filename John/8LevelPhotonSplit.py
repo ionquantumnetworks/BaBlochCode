@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Mar  6 11:53:52 2019
+Created on Thu Jun 13 20:45:06 2019
 
-@author: John Hannegan
+@author: jmhannegan
 """
-
 
 from qutip import *
 import numpy as np
@@ -101,13 +101,20 @@ E650tot=Efieldy650+Efieldz650+Efield650sigplus+Efield650sigminus
 
 ###################Constructing Hint##################################
 Rabilist=[[16,np.dot(E493tot,D20)],[24,np.dot(E493tot,D30)],[17,np.dot(E493tot,D21)],[25,np.dot(E493tot,D31)],[2,np.conjugate(np.dot(E493tot,D20))],[3,np.conjugate(np.dot(E493tot,D30))],[10,np.conjugate(np.dot(E493tot,D21))],[11,np.conjugate(np.dot(E493tot,D31))],[20,np.dot(E650tot,D24)],[28,np.dot(E650tot,D34)],[21,np.dot(E650tot,D25)],[29,np.dot(E650tot,D35)],[22,np.dot(E650tot,D26)],[30,np.dot(E650tot,D36)],[23,np.dot(E650tot,D27)],[31,np.dot(E650tot,D37)],[34,np.conjugate(np.dot(E650tot,D24))],[35,np.conjugate(np.dot(E650tot,D34))],[42,np.conjugate(np.dot(E650tot,D25))],[43,np.conjugate(np.dot(E650tot,D35))],[50,np.conjugate(np.dot(E650tot,D26))],[51,np.conjugate(np.dot(E650tot,D36))],[58,np.conjugate(np.dot(E650tot,D27))],[59,np.conjugate(np.dot(E650tot,D37))]]
-
+shape=(8,8)
 Hoffdiaglist=[0]*64
 
 for x in range(len(Rabilist)):
     Hoffdiaglist[Rabilist[x][0]]=Rabilist[x][1]
+Hoffdiagmatrix=np.array(Hoffdiaglist).reshape(shape)
+#print(np.array(Hoffdiaglist).reshape(shape))
+#print(Hoffdiagmatrix[1][1])
 
-#print(Hoffdiaglist)
+#copy H int for the 2nd set of atomic lvls
+#for x in range(len(Rabilist)):
+ #   Hoffdiaglist[Rabilist[x][0]+64]=Rabilist[x][1]
+
+#print(len(Hoffdiaglist))
 
 
 #Htest=[0]*64
@@ -122,14 +129,25 @@ for x in range(len(Rabilist)):
 
 #RWA matrix
 #Diagonals
-H0 = 0 * basis(8,0) * basis(8,0).dag()
-for x in range(0,8):
-    H0 = H0 + detuninglist[x]*basis(8,x)*basis(8,x).dag() + 0.5 * mvalues[x]*u*gfactors[x]*basis(8,x)*basis(8,x).dag()
-
-Hoffdiag=0*basis(8,0) * basis(8,0).dag()
-for x in range(0,8):
-    for y in range(0,8):
-        Hoffdiag=Hoffdiag + Hoffdiaglist[8*x+y] * basis(8,x)*basis(8,y).dag()
+H0 = 0 * basis(16,0) * basis(16,0).dag()
+for x in range(0,16):
+    if x < 8:
+        H0 = H0 + detuninglist[x]*basis(16,x)*basis(16,x).dag() + 0.5 * mvalues[x]*u*gfactors[x]*basis(16,x)*basis(16,x).dag()
+    else:
+        H0 = H0 + detuninglist[x-8]*basis(16,x)*basis(16,x).dag() + 0.5 * mvalues[x-8]*u*gfactors[x-8]*basis(16,x)*basis(16,x).dag()
+Hoffdiag=0*basis(16,0) * basis(16,0).dag()
+for x in range(0,16):
+    for y in range(0,16):
+        if x<8:
+            if y<8:
+                Hoffdiag=Hoffdiag + Hoffdiagmatrix[x][y] * basis(16,x)*basis(16,y).dag()
+            else:
+                pass
+        else:
+            if y<8:
+                pass
+            else:
+                Hoffdiag=Hoffdiag + Hoffdiagmatrix[x-8][y-8] * basis(16,x)*basis(16,y).dag()
         #print(x,y)
 
 #print(Hoffdiaglist[8*7+3])
@@ -140,18 +158,30 @@ Htot=H0+Hoffdiag
 
 
 #Decay Terms See Oberst Mater's Thesis Innsbruck
-C1= np.sqrt(2*gPS/3)*basis(8,0)*basis(8,3).dag()
-C2= np.sqrt(2*gPS/3)*basis(8,1)*basis(8,2).dag()
-C3= np.sqrt(gPS/3)*(basis(8,0)*basis(8,2).dag()-basis(8,1)*basis(8,3).dag())
-C4= np.sqrt(gPD/2)*basis(8,4)*basis(8,2).dag()+np.sqrt(gPD/6)*basis(8,5)*basis(8,3).dag()
-C5= np.sqrt(gPD/6)*basis(8,6)*basis(8,2).dag()+np.sqrt(gPD/2)*basis(8,7)*basis(8,3).dag()
-C6= np.sqrt(gPD/3)*(basis(8,5)*basis(8,2).dag()-basis(8,6)*basis(8,3).dag())
+C1= np.sqrt(2*gPS/3)*basis(16,0)*basis(16,3).dag()
+C2= np.sqrt(2*gPS/3)*basis(16,1)*basis(16,2).dag()
+C3= np.sqrt(gPS/3)*(basis(16,0)*basis(16,2).dag()-basis(16,1)*basis(16,3).dag())
+C4= np.sqrt(gPD/2)*basis(16,4)*basis(16,2).dag()+np.sqrt(gPD/6)*basis(16,5)*basis(16,3).dag()
+C5= np.sqrt(gPD/6)*basis(16,6)*basis(16,2).dag()+np.sqrt(gPD/2)*basis(16,7)*basis(16,3).dag()
+C6= np.sqrt(gPD/3)*(basis(16,5)*basis(16,2).dag()-basis(16,6)*basis(16,3).dag())
 #linewidth terms
-C7= np.sqrt(2*lg)*(basis(8,0)*basis(8,0).dag()+basis(8,1)*basis(8,1).dag())
-C8= np.sqrt(2*lr)*(basis(8,4)*basis(8,4).dag()+basis(8,5)*basis(8,5).dag()
-    +basis(8,6)*basis(8,6).dag()+basis(8,7)*basis(8,7).dag())
+C7= np.sqrt(2*lg)*(basis(16,0)*basis(16,0).dag()+basis(16,1)*basis(16,1).dag())
+C8= np.sqrt(2*lr)*(basis(16,4)*basis(16,4).dag()+basis(16,5)*basis(16,5).dag()
+    +basis(16,6)*basis(16,6).dag()+basis(16,7)*basis(16,7).dag())
+#Decay Terms for 2nd sys STILL HAVENT DONE
+C9= np.sqrt(2*gPS/3)*basis(16,0+8)*basis(16,3+8).dag()
+C10= np.sqrt(2*gPS/3)*basis(16,1+8)*basis(16,2+8).dag()
+C11= np.sqrt(gPS/3)*(basis(16,0+8)*basis(16,2+8).dag()-basis(16,1+8)*basis(16,3+8).dag())
+C12= np.sqrt(gPD/2)*basis(16,4+8)*basis(16,2+8).dag()+np.sqrt(gPD/6)*basis(16,5+8)*basis(16,3+8).dag()
+C13= np.sqrt(gPD/6)*basis(16,6+8)*basis(16,2+8).dag()+np.sqrt(gPD/2)*basis(16,7+8)*basis(16,3+8).dag()
+C14= np.sqrt(gPD/3)*(basis(16,5+8)*basis(16,2+8).dag()-basis(16,6+8)*basis(16,3+8).dag())
+#linewidth terms for 2nd sys STILL HAVENT DONE
+C15= np.sqrt(2*lg)*(basis(16,0+8)*basis(16,0+8).dag()+basis(16,1+8)*basis(16,1+8).dag())
+C16= np.sqrt(2*lr)*(basis(16,4+8)*basis(16,4+8).dag()+basis(16,5+8)*basis(16,5+8).dag()
+    +basis(16,6+8)*basis(16,6+8).dag()+basis(16,7+8)*basis(16,7+8).dag())
 
-c_ops=[C1,C2,C3,C4,C5,C6,C7,C8]
+
+c_ops=[C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14,C15,C16]
 
 
 
@@ -159,19 +189,19 @@ c_ops=[C1,C2,C3,C4,C5,C6,C7,C8]
 #####End of Setup#############
 tlist = np.linspace(0,20,1000) #gives times of evaluation (start, stop, # of steps)
 
-s1= basis(8,0)*basis(8,0).dag()
-s2= basis(8,1)*basis(8,1).dag()
-p1= basis(8,2)*basis(8,2).dag()
-p2= basis(8,3)*basis(8,3).dag()
-d1= basis(8,4)*basis(8,4).dag()
-d2= basis(8,5)*basis(8,5).dag()
-d3= basis(8,6)*basis(8,6).dag()
-d4= basis(8,7)*basis(8,7).dag()
+s1= basis(16,0)*basis(16,0).dag()
+s2= basis(16,1)*basis(16,1).dag()
+p1= basis(16,2)*basis(16,2).dag()
+p2= basis(16,3)*basis(16,3).dag()
+d1= basis(16,4)*basis(16,4).dag()
+d2= basis(16,5)*basis(16,5).dag()
+d3= basis(16,6)*basis(16,6).dag()
+d4= basis(16,7)*basis(16,7).dag()
 
-rho_initial = basis(8,5)*basis(8,5).dag() #Initial state of density matrix
-sigSstates= basis(8,0)*basis(8,0).dag() + basis(8,1)*basis(8,1).dag()
-sigPstates= basis(8,2)*basis(8,2).dag() + basis(8,3)*basis(8,3).dag()
-sigDstates= basis(8,4)*basis(8,4).dag() + basis(8,5)*basis(8,5).dag() + basis(8,6)*basis(8,6).dag() + basis(8,7)*basis(8,7).dag()
+rho_initial = basis(16,5)*basis(16,5).dag() #Initial state of density matrix
+sigSstates= basis(16,0)*basis(16,0).dag() + basis(16,1)*basis(16,1).dag()
+sigPstates= basis(16,2)*basis(16,2).dag() + basis(16,3)*basis(16,3).dag()
+sigDstates= basis(16,4)*basis(16,4).dag() + basis(16,5)*basis(16,5).dag() + basis(16,6)*basis(16,6).dag() + basis(16,7)*basis(16,7).dag()
 pop = mesolve(Htot,rho_initial,tlist,c_ops,[s1,s2,p1,p2,d1,d2,d3,d4]) #solve system for times given by t list
 
 plt.plot(tlist,pop.expect[0], label='S1')
