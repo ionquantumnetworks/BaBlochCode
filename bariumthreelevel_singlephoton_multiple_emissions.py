@@ -12,13 +12,8 @@ from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 from pylab import *
-<<<<<<< HEAD
-import csv
 import operator
 
-=======
-import operator
->>>>>>> 4874dceb555a9b31bd2af6a70a137c4c682508a7
 
 #Turn on or off coupling between separate ions 0=off 1=on
 coupling=1
@@ -27,16 +22,16 @@ coupling=1
 #units MHz -> time units us
 #detunings
 d12 = 0*(2*np.pi)
-d23 = 0*(2*np.pi)
+d23 = 0.00001*(2*np.pi)
 #rabi frequencies
 Om12 = 0*(2*np.pi)
-Om23 = 5.3*(2*np.pi)*(10)
+Om23 = 5.3*(2*np.pi)*(1)
 #natural decay rate
 g12 = 2*np.pi*15.1
 g23 = 2*np.pi*5.3
 #laser linewidths
 l12 = 0*np.pi*2
-l23 = 1*np.pi*2
+l23 = 0*np.pi*2
 ##################################################################
 
 ######################Setting up Hamiltonian######################
@@ -100,7 +95,7 @@ H = d12*sig11 + Om12/2*(sig12+sig21)+ d23*sig33 + Om23/2*(sig23+sig32) \
 
 ######## evaluate populations as a function of time ############
 tmax = 1 #microseconds
-tstep = 10000
+tstep = 100000
 tlist = np.linspace(0,tmax,tstep) #gives times of evaluation (start, stop, # of steps)
 
 rho_initial = sig11 * 0 + sig22 * 0 + sig33 * 1 #Initial state of density matrix
@@ -135,7 +130,7 @@ show()
 #plt.xlim(-50,50)
 #show()
 
-spectrum=list(zip(np.fft.fftfreq(len(pop.expect[1]))*tstep/2/np.pi/tmax,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0]))
+spectrum=list(zip(np.fft.fftfreq(len(pop.expect[1]))*tstep/tmax,np.absolute(np.fft.fft(pop.expect[1]))/np.absolute(np.fft.fft(pop.expect[1]))[0]))
 spectrum.sort(key=operator.itemgetter(0))
 a,b=zip(*spectrum)
 
@@ -144,9 +139,19 @@ plt.xlim(-500,500)
 show()
 
 plt.plot(a,b)
-plt.xlim(-5,5)
+plt.xlim(-250,250)
 
 show()
+
+filename=str(input("Filename:"))
+thefile = open(r'C:\Users\Ions\Desktop\GitHub\BaBlochCode\_' + str(filename) + '_pop.dat', 'w')
+for item in pop.expect[1]:
+  thefile.write("%s\n" % item)
+thefile.close()
+thefile = open(r'C:\Users\Ions\Desktop\GitHub\BaBlochCode\_' + str(filename) + '_time.dat', 'w')
+for item in tlist:
+  thefile.write("%s\n" % item)
+thefile.close()
 #print(len(pop.expect[1]))
 #print(np.fft.fft((pop.expect[1])))
 #print(np.linspace(0,tstep/tmax))
