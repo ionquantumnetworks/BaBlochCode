@@ -22,16 +22,16 @@ coupling=1
 #units MHz -> time units us
 #detunings
 d12 = 0*(2*np.pi)
-d23 = 0.00001*(2*np.pi)
+d23 = 15*(2*np.pi)
 #rabi frequencies
 Om12 = 0*(2*np.pi)
-Om23 = 5.3*(2*np.pi)*(1)
+Om23 = 5.3*(2*np.pi)*(2.5)
 #natural decay rate
 g12 = 2*np.pi*15.1
 g23 = 2*np.pi*5.3
 #laser linewidths
 l12 = 0*np.pi*2
-l23 = 0*np.pi*2
+l23 = 2*np.pi*2
 ##################################################################
 
 ######################Setting up Hamiltonian######################
@@ -94,10 +94,9 @@ H = d12*sig11 + Om12/2*(sig12+sig21)+ d23*sig33 + Om23/2*(sig23+sig32) \
     + d12*sig44 + Om12/2*(sig45+sig54)+ d23*sig66 + Om23/2*(sig56+sig65)
 
 ######## evaluate populations as a function of time ############
-tmax = 1 #microseconds
+tmax = 0.4 #microseconds
 tstep = 100000
 tlist = np.linspace(0,tmax,tstep) #gives times of evaluation (start, stop, # of steps)
-
 rho_initial = sig11 * 0 + sig22 * 0 + sig33 * 1 #Initial state of density matrix
 
 pop = mesolve(H,rho_initial,tlist,c_ops,[sig11,sig22,sig33,sig44,sig55,sig66]) #solve system for times given by t list
@@ -148,10 +147,15 @@ thefile = open(r'C:\Users\Ions\Desktop\GitHub\BaBlochCode\_' + str(filename) + '
 for item in pop.expect[1]:
   thefile.write("%s\n" % item)
 thefile.close()
+thefile = open(r'C:\Users\Ions\Desktop\GitHub\BaBlochCode\_' + str(filename) + '_pop2.dat', 'w')
+for item in pop.expect[4]:
+  thefile.write("%s\n" % item)
+thefile.close()
 thefile = open(r'C:\Users\Ions\Desktop\GitHub\BaBlochCode\_' + str(filename) + '_time.dat', 'w')
 for item in tlist:
   thefile.write("%s\n" % item)
 thefile.close()
+
 #print(len(pop.expect[1]))
 #print(np.fft.fft((pop.expect[1])))
 #print(np.linspace(0,tstep/tmax))
