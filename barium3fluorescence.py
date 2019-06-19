@@ -14,10 +14,10 @@ qutip.settings.has_mkl=False
 
 #Units of frequnecies are in MZ
 #Time units will be in us
-Deltag = -2*sc.pi*200 #detuning of 493 laser
-Deltar = +2*sc.pi*50 #detuning of 650 laser
-Om12 = 2*sc.pi*51.5 #Rabi frequrency of |1> to |2> 
-Om23 = 2*sc.pi*35.2 #Rabi frequrency of |2> to |3> 
+Deltag = -2*sc.pi*0 #detuning of 493 laser
+Deltar = +2*sc.pi*0 #detuning of 650 laser
+Om12 = 2*sc.pi*15.1 #Rabi frequrency of |1> to |2> 
+Om23 = 2*sc.pi*5.3 #Rabi frequrency of |2> to |3> 
 gamma21 =  2*sc.pi*15.1 #Decay rate of |2> to |1>
 gamma23 =  2*sc.pi*5.3 #Decay rate of |2> to |3>
 
@@ -55,33 +55,35 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 line1, = ax.plot(x, y, 'b-') 
 
-while Deltag < 2*sc.pi*200:
+Deltag =  -2*sc.pi*50
+while Deltag < 2*sc.pi*50:
+    Deltar = 2*sc.pi*10
     #Hamiltonian of system RWA
     H = (Deltag*sig11 + Deltar*sig33 + 0.5*Om12*sig12 + 0.5*Om12*sig21 + 0.5*Om23*sig23 + 0.5*Om23*sig32)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt = expect(sig22, final_state) #Gives expectation value of solved Hamiltonian for excited state
     yg.append(fexpt)
     xg.append(Deltag/(2*sc.pi))
-    Deltag += 2*sc.pi*2
+    Deltag += 2*sc.pi*0.5
 
 plt.plot(xg, yg,'c-')
 plt.xlabel('Δg [MHz]')
-plt.ylabel('Population in |2>')
+plt.ylabel('Population in |P-state>')
 plt.show()
 
-Deltar =  -2*sc.pi*200
-while Deltar < 2*sc.pi*200:
+Deltar =  -2*sc.pi*50
+while Deltar < 2*sc.pi*50:
     #Hamiltonian of system RWA
-    Deltag =  -2*sc.pi*20
+    Deltag =  -2*sc.pi*0
     H = (Deltag*sig11 + Deltar*sig33 + 0.5*Om12*sig12 + 0.5*Om12*sig21 + 0.5*Om23*sig23 + 0.5*Om23*sig32)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt = expect(sig22, final_state)  #Gives expectation value of solved Hamiltonian for excited state
     #print(final_state)
     yr.append(fexpt)
     xr.append(Deltar/(2*sc.pi))
-    Deltar += 2*sc.pi*2
+    Deltar += 2*sc.pi*0.5
     
 plt.plot(xr, yr, 'r-')
 plt.xlabel('Δr [MHz]')
-plt.ylabel('Population in |2>')
+plt.ylabel('Population in |P-state>')
 plt.show()

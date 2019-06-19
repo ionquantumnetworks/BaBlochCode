@@ -18,13 +18,13 @@ us = 1*10**-6
 
 #Laser Detunings -2*sc.pi*
 Deltag = 2*sc.pi*0*MHz #detuning of 493 laser
-Deltar = 2*sc.pi*0*MHz#detuning of 650 laser
+Deltar = 2*sc.pi*12*MHz#detuning of 650 laser
 DeltaQ= 2*sc.pi*0 #detuning of 1762 laser
 
 #Rabi Frequnecies
-Om12 = 2*sc.pi*0*MHz #Rabi frequency of |1> to |2> 
-Om23 = 2*sc.pi*0*MHz #Rabi frequency of |2> to |3>
-Om14 = 2*sc.pi*1*MHz #Rabi frequency of |1> to |4>
+Om12 = 2*sc.pi*15*MHz #Rabi frequency of |1> to |2> 
+Om23 = 2*sc.pi*5*MHz #Rabi frequency of |2> to |3>
+Om14 = 2*sc.pi*0*MHz #Rabi frequency of |1> to |4>
 
 #Decay rates
 gamma21 =  2*sc.pi*15.1*MHz #Decay rate of |2> to |1>
@@ -36,7 +36,7 @@ gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
 gammalQ = 2*sc.pi*100*kHz #1762 laser linewidth
 
-tlist = np.linspace(-0*us, 10*us, 1000) #List of points for plotting purposes
+tlist = np.linspace(-0*us, 1*us, 1000) #List of points for plotting purposes
 
 #Operators between |n> and |m> 
 sig11 = basis(4,0) * basis(4,0).dag()
@@ -86,6 +86,10 @@ Spop= np.real(nS.expect[0])
 Ppop= np.real(nP.expect[0])
 Dpop= np.real(nD.expect[0])
 Qpop= np.real(nQ.expect[0])
+print('Spop =' + str(Spop[-1]))
+print('Ppop =' + str(Ppop[-1]))
+print('Dpop =' + str(Dpop[-1]))
+print('Qpop =' + str(Qpop[-1]))
 #final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
 #fexpt = expect(e_ops, final_state) #Calculates expectation values (e_ops list) for Hamiltonion at t = inifinity
 #print(H)
