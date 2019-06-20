@@ -5,7 +5,10 @@ Created on Wed Nov 22 15:25:19 2017
 @author: James
 """
 
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 import scipy.constants as sc
 import numpy as np
@@ -49,6 +52,7 @@ xg = []
 x = []
 y = []
 
+#2D plots:
 # initialise plot and line
 plt.ion()
 fig = plt.figure()
@@ -57,7 +61,7 @@ line1, = ax.plot(x, y, 'b-')
 
 Deltag =  -2*sc.pi*50
 while Deltag < 2*sc.pi*50:
-    Deltar = 2*sc.pi*10
+    Deltar = 2*sc.pi*8.5
     #Hamiltonian of system RWA
     H = (Deltag*sig11 + Deltar*sig33 + 0.5*Om12*sig12 + 0.5*Om12*sig21 + 0.5*Om23*sig23 + 0.5*Om23*sig32)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
@@ -87,3 +91,53 @@ plt.plot(xr, yr, 'r-')
 plt.xlabel('Δr [MHz]')
 plt.ylabel('Population in |P-state>')
 plt.show()
+
+"""
+#Attempt to plot 3D plots
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+Z = []
+DR = []
+DG = []
+Deltag = -2*sc.pi*30
+while Deltag < 2*sc.pi*30:
+    Deltar = -2*sc.pi*50
+    while Deltar < 2*sc.pi*50:
+        H = (Deltag*sig11 + Deltar*sig33 + 0.5*Om12*sig12 + 0.5*Om12*sig21 + 0.5*Om23*sig23 + 0.5*Om23*sig32)
+        final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
+        fexpt = expect(sig22, final_state)  #Gives expectation value of solved Hamiltonian for excited state
+        Z.append(fexpt)
+        DR.append(Deltar/(2*sc.pi))
+        DG.append(Deltag/(2*sc.pi))
+        Deltar += 2*sc.pi*10
+    Deltag += 2*sc.pi*10
+
+DR, DG = np.meshgrid(DR, DG)
+print(len(DG))
+print(len(DR))
+print(len(Z))
+
+# Plot the surface.
+surf = ax.plot_surface(DR, DG, Z, cmap=cm.cool,linewidth=0, antialiased=True)
+
+# Customize the z axis.
+ax.set_zlim(-0.01, 0.15)
+ax.zaxis.set_major_locator(LinearLocator(10))
+ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+# Add a color bar which maps values to colors.
+fig.colorbar(surf, shrink=0.5, aspect=5)
+
+plt.show()
+print(Z)
+Z = np.array(Z)
+zcont = Z.reshape(len(DR))
+print(zcont)
+plt.figure()
+cp = plt.contourf(DR, DG, zcont)
+plt.colorbar(cp)
+plt.title('Filled Contours Plot')
+plt.xlabel('x (cm)')
+plt.ylabel('y (cm)')
+plt.show()
+"""
