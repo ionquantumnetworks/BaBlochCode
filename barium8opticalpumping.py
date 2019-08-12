@@ -29,20 +29,19 @@ qutip.settings.has_mkl=False
 Deltag = -2*sc.pi*99 #detuning of 493 laser
 Deltar = 2*sc.pi*25 #detuning of 650 laser
 #493 beams
-Omgpi = 2*sc.pi*25 #Rabi frequrency of |1> to |3> and |2> to |4>
+Omgpi = 2*sc.pi*50 #Rabi frequrency of |1> to |3> and |2> to |4>
 Omgsp = 2*sc.pi*0#Rabi frequrency of |1> to |4>
 Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3> 
 #650 beams
 Omrpi = 2*sc.pi*11#Rabi frequrency of |6> to |3> and |7> to |4>
 Omrsp = 2*sc.pi*11 #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*11#Rabi frequrency of |7> to |3> and |8> to |4> 
+Omrsm = 2*sc.pi*0#Rabi frequrency of |7> to |3> and |8> to |4> 
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
 gammalg = 2*sc.pi*2 #493 laser linewidth
 gammalr = 2*sc.pi*2 #650 laser linewidth
-B = 0.5/10000 #B-field in Tesla
-tlist = np.linspace(0, 0.06, 2000) #List of points for plotting purposes
+B = 5/10000 #B-field in Tesla
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz Bohr mag = 9.274*10^-24 J/T
 
 #Operators between |n> and |m> sig(row-col)
@@ -130,14 +129,14 @@ H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omg
 
 #Initial state of system
 #psi0 = (1/(np.sqrt(4)))*(basis(8,4)+basis(8,5)+basis(8,6)+basis(8,7)) #D-state superposition
-#psi0 = (1/(np.sqrt(2)))*(basis(8,0)+basis(8,1)) #ground state superposition
+psi0 = (1/(np.sqrt(2)))*(basis(8,0)+basis(8,1)) #ground state superposition
 #psi0 = basis(8,7) #stretch-state
 #psi0 = (1/(np.sqrt(2)))*(basis(8,2)+basis(8,3)) #P-state superposition
 #psi0 = basis(8,0)
 #psi0 = np.sqrt(0.05)*basis(8,0)+np.sqrt(0.05)*basis(8,1)+np.sqrt(0.03)*basis(8,2)+np.sqrt(0.03)*basis(8,3)+np.sqrt(0.22)*basis(8,4)+np.sqrt(0.17)*basis(8,5)+np.sqrt(0.20)*basis(8,6)+np.sqrt(0.25)*basis(8,7)
 #psi0 = (1/(np.sqrt(3)))*(basis(8,5)+basis(8,6)+basis(8,7)) #D-state superposition
 #STEADY STATE POPS: 0.04797718762193412 0.04662544116872065 0.03470595961939421 0.034370105505866694 0.2170933242442322 0.17455678227670463 0.19925282499341132 0.24541837456973623
-psi0 = (np.sqrt(0.015)*basis(8,4)+ np.sqrt(0.014)*basis(8,5)+ np.sqrt(0.013)*basis(8,6)+ np.sqrt(0.86)*basis(8,7)) #D-state superposition
+#si0 = (np.sqrt(0.015)*basis(8,4)+ np.sqrt(0.014)*basis(8,5)+ np.sqrt(0.013)*basis(8,6)+ np.sqrt(0.86)*basis(8,7)) #D-state superposition
 
 ##Decays and dissipations
 C41 = np.sqrt((2/3)*gammag) * sig14 #Decay from |4> to |1>
@@ -168,7 +167,7 @@ c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 #Excited = fexpt33 + fexpt44
 #print(Excited)
 
-times = np.linspace(0, 5.035, 2000)
+times = np.linspace(0, 2, 2000)
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
