@@ -35,7 +35,7 @@ Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 Omrpi = 2*sc.pi*11#Rabi frequrency of |6> to |3> and |7> to |4>
 Omrsp = 2*sc.pi*11 #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*0#Rabi frequrency of |7> to |3> and |8> to |4> 
+Omrsm = 2*sc.pi*0.13#Rabi frequrency of |7> to |3> and |8> to |4> 
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
@@ -167,7 +167,7 @@ c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 #Excited = fexpt33 + fexpt44
 #print(Excited)
 
-times = np.linspace(0, 2, 2000)
+times = np.linspace(0, 8, 2000)
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
