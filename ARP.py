@@ -56,12 +56,12 @@ us = 1*10**-6
 #Laser Detunings -2*sc.pi*
 Deltag = 2*sc.pi*0 #detuning of 493 laser
 Deltar = 2*sc.pi*0#detuning of 650 laser
-DeltaQ= -2*sc.pi*0 #detuning of 1762 laser
+DeltaQ= -2*sc.pi*1 #detuning of 1762 laser
 
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
 Om23 = 2*sc.pi*0 #Rabi frequency of |2> to |3>
-Om14 = 2*sc.pi*10 #Rabi frequency of |1> to |4>
+Om14 = 2*sc.pi*1.043 #Rabi frequency of |1> to |4>
 
 #Decay rates
 gamma21 =  0#2*sc.pi*15.1*MHz #Decay rate of |2> to |1>
@@ -71,7 +71,7 @@ gamma41 =  2*sc.pi*10.1*10**-9 #Decay rate of |4> to |1> used a lifetime of 31.2
 #Laser Linewidths
 gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
-gammalQ = 2*sc.pi*1.30018 #1762 laser linewidth
+gammalQ = 2*sc.pi*0.3002 #1762 laser linewidth
 
 #Operators between |n> and |m> 
 sig11 = basis(4,0) * basis(4,0).dag()
@@ -93,10 +93,10 @@ sig44 = basis(4,3) * basis(4,3).dag()
 ##Initial state of system  
 psi0 = basis(4,0)
 
-A = 2*sc.pi*30  # sweep rate
+A = 2*sc.pi*3  # sweep rate
 DeltaQinitial = -2*sc.pi*1 #Initial 1762 laser detuning
 tstart = DeltaQinitial/A
-tlist = np.linspace(tstart, -1.0*tstart, 300) #List of points for plotting purposes
+tlist = np.linspace(tstart, -50.0*tstart, 100) #List of points for plotting purposes
 
 ##Decays and dissipations
 C21 = np.sqrt(gamma21) * sig12 #Decay from |2> to |1>
@@ -112,7 +112,7 @@ if singlePlot == 1:
     start_time = time.time()
     p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
     print('time elapsed = ' + str(time.time() - start_time))
-    LZ= 1 - np.exp(-np.pi * Om14 **2 / (2 * A))
+    LZ= 1 - np.exp((-2*(np.pi)**2 * (Om14 **2)) / (A))
     print('Landau-Zener Aprroximation: ' + str(LZ))
     print('Hamiltonian Evolution: '+ str(np.real(p_ex)[-1]))
     
@@ -127,15 +127,15 @@ if singlePlot == 1:
 if singlePlot == 0:
     yr = []
     xr = []
-    A = 2*sc.pi*0.1  # sweep rate
+    A = 2*sc.pi*1  # sweep rate
     start_time = time.time()
-    while A < 2*sc.pi*100.3:
+    while A < 2*sc.pi*1000.3:
         tstart = DeltaQinitial/A
-        tlist = np.linspace(tstart, -1*tstart, 300) #List of points for plotting purposes
+        tlist = np.linspace(tstart, -50*tstart, 100) #List of points for plotting purposes
         p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
         yr.append(np.real(p_ex)[-1])
         xr.append(A/(2*sc.pi))
-        A += 2*sc.pi*0.01*A
+        A += 2*sc.pi*0.1*A
     print('time elapsed = ' + str(time.time() - start_time))    
     fig, ax = plt.subplots(figsize=(12,8))
     ax.semilogx(xr, yr, 'ro',)
