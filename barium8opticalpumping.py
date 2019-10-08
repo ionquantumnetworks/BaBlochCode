@@ -136,7 +136,7 @@ psi0 = basis(8,7) #stretch-state
 #psi0 = np.sqrt(0.05)*basis(8,0)+np.sqrt(0.05)*basis(8,1)+np.sqrt(0.03)*basis(8,2)+np.sqrt(0.03)*basis(8,3)+np.sqrt(0.22)*basis(8,4)+np.sqrt(0.17)*basis(8,5)+np.sqrt(0.20)*basis(8,6)+np.sqrt(0.25)*basis(8,7)
 #psi0 = (1/(np.sqrt(3)))*(basis(8,5)+basis(8,6)+basis(8,7)) #D-state superposition
 #STEADY STATE POPS: 0.04797718762193412 0.04662544116872065 0.03470595961939421 0.034370105505866694 0.2170933242442322 0.17455678227670463 0.19925282499341132 0.24541837456973623
-#si0 = (np.sqrt(0.015)*basis(8,4)+ np.sqrt(0.014)*basis(8,5)+ np.sqrt(0.013)*basis(8,6)+ np.sqrt(0.86)*basis(8,7)) #D-state superposition
+#psi0 = (np.sqrt(0.015)*basis(8,4)+ np.sqrt(0.014)*basis(8,5)+ np.sqrt(0.013)*basis(8,6)+ np.sqrt(0.86)*basis(8,7)) #D-state superposition
 
 ##Decays and dissipations
 C41 = np.sqrt((2/3)*gammag) * sig14 #Decay from |4> to |1>
