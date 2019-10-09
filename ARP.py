@@ -61,7 +61,7 @@ DeltaQ= -2*sc.pi*1 #detuning of 1762 laser
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
 Om23 = 2*sc.pi*0 #Rabi frequency of |2> to |3>
-Om14 = 2*sc.pi*0.043 #Rabi frequency of |1> to |4>
+Om14 = 2*sc.pi*0.1 #Rabi frequency of |1> to |4>
 
 #Decay rates
 gamma21 =  0#2*sc.pi*15.1*MHz #Decay rate of |2> to |1>
@@ -93,7 +93,7 @@ sig44 = basis(4,3) * basis(4,3).dag()
 ##Initial state of system  
 psi0 = basis(4,0)
 
-A = 2*sc.pi*0.00001  # sweep rate
+A = 2*sc.pi*0.00001   # sweep rate
 DeltaQinitial = -2*sc.pi*1 #Initial 1762 laser detuning
 tstart = DeltaQinitial/A
 tlist = np.linspace(tstart, -3.0*tstart, 100) #List of points for plotting purposes
@@ -134,7 +134,7 @@ if singlePlot == 0:
         tlist = np.linspace(tstart, -3*tstart, 100) #List of points for plotting purposes
         p_ex = qubit_integrate(Om14, DeltaQ, A, C41,ClQ, psi0, tlist)
         yr.append(np.real(p_ex)[-1])
-        xr.append(A/(2*sc.pi))
+        xr.append((A/(2*sc.pi))*10**3)
         A += 2*sc.pi*0.5*A
     print('time elapsed = ' + str(time.time() - start_time))    
     fig, ax = plt.subplots(figsize=(12,8))
