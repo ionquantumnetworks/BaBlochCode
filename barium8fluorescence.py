@@ -29,19 +29,19 @@ Deltag = 0*sc.pi*0 #detuning of 493 laser
 Deltar = 0*sc.pi*0 #detuning of 650 laser
 #493 beams
 #Omg = 2*sc.pi*5 #Rabi frequrency of 2S1/2 to 2P1/2 
-Omgpi = 2*sc.pi*10 #Rabi frequrency of |1> to |3> and |2> to |4>
-Omgsp = 2*sc.pi*10#Rabi frequrency of |1> to |4>
-Omgsm = 2*sc.pi*10 #Rabi frequrency of |2> to |3>
+Omgpi = 2*sc.pi*19 #Rabi frequrency of |1> to |3> and |2> to |4>
+Omgsp = 2*sc.pi*0 #Rabi frequrency of |1> to |4>
+Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 #Omr = 2*sc.pi*5 #Rabi frequrency of 2P1/2 to 2D3/2
-Omrpi = 2*sc.pi*5 #Rabi frequrency of |6> to |3> and |7> to |4>
-Omrsp = 2*sc.pi*5 #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*5 #Rabi frequrency of |7> to |3> and |8> to |4>
+Omrpi = 2*sc.pi*9 #Rabi frequrency of |6> to |3> and |7> to |4>
+Omrsp = 2*sc.pi*9#Rabi frequrency of |5> to |3> and |6> to |4>
+Omrsm = 2*sc.pi*9 #Rabi frequrency of |7> to |3> and |8> to |4>
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
-gammalg = 2*sc.pi*0 #493 laser linewidth
-gammalr = 2*sc.pi*0 #650 laser linewidth
+gammalg = 2*sc.pi*1 #493 laser linewidth
+gammalr = 2*sc.pi*1 #650 laser linewidth
 B = 5/10000 #B-field in Tesla
 #tlist = np.linspace(0, 0.25, 10) #List of points for plotting purposes
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz
@@ -168,9 +168,9 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 line1, = ax.plot(x, y, 'b-') 
 
-Deltag = -2*sc.pi*100
+Deltag = -2*sc.pi*50
 while Deltag < 2*sc.pi*50:
-    Deltar = -2*sc.pi*29 #detuning of 650 laser
+    Deltar = +2*sc.pi*12 #detuning of 650 laser
     H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt1 = expect(sig44, final_state)  #Gives expectation value of solved Hamiltonian for excited state
@@ -185,9 +185,9 @@ plt.xlabel('Δg [MHz]')
 plt.ylabel('Population in |3>+|4>')
 plt.show()
 
-Deltar =  -2*sc.pi*60
-while Deltar < 2*sc.pi*40:
-    Deltag =  -2*sc.pi*99
+Deltar =  -2*sc.pi*120
+while Deltar < 2*sc.pi*80:
+    Deltag =  -2*sc.pi*40
     H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt1 = expect(sig44, final_state)  #Gives expectation value of solved Hamiltonian for excited state
@@ -204,16 +204,16 @@ plt.ylabel('Population in |3>+|4>')
 plt.show()
 
 print(wB)
-##thefile = open('G:\\Team Drives\\Ions\\03 - Projects\\Current Projects\\Rb Ba+ hybrid\\493 Photon Shape Tests\\DeltaR_8Mar.dat', 'w')
-##for item in xr:
-##  thefile.write("%s\n" % item)
-##thefile.close()
-
-##thefile = open('G:\\Team Drives\\Ions\\03 - Projects\\Current Projects\\Rb Ba+ hybrid\\493 Photon Shape Tests\\PopPR_8Mar.dat', 'w')
-##for item in yr:
-##  thefile.write("%s\n" % item)
-##thefile.close()
-###
+#thefile = open('G:\\Shared drives\\Ions\\Ion Data\\Spectroscopy Scans\\Theory Scans\\DeltaR.dat', 'w')
+#for item in xr:
+#  thefile.write("%s\n" % item)
+#thefile.close()
+#
+#thefile = open('G:\\Shared drives\\Ions\\Ion Data\\Spectroscopy Scans\\Theory Scans\\PopPR.dat', 'w')
+#for item in yr:
+#  thefile.write("%s\n" % item)
+#thefile.close()
+#
 #thefile = open('G:\\Team Drives\\Ions\\03 - Projects\\Current Projects\\Rb Ba+ hybrid\\493 Photon Shape Tests\\DeltaR493-8Mar.dat', 'w')
 #for item in xg:
 #  thefile.write("%s\n" % item)
