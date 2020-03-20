@@ -22,7 +22,11 @@ us = 1*10**-6
 #Laser Detunings -2*sc.pi*
 Deltag = 2*sc.pi*0 #detuning of 493 laser
 Deltar = 2*sc.pi*0#detuning of 650 laser
+<<<<<<< HEAD
 DeltaQ= -2*sc.pi*0.000#detuning of 1762 laser
+=======
+DeltaQ= -2*sc.pi*0.0#detuning of 1762 laser
+>>>>>>> 88765bd56ff9d32f9a1ed17b34afd7ec6b4e9892
 
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
@@ -37,7 +41,11 @@ gamma41 =  2*sc.pi*10.1*10**-9 #Decay rate of |4> to |1> used a lifetime of 31.2
 #Laser Linewidths
 gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
+<<<<<<< HEAD
 gammalQ = 2*sc.pi*0.002 #1762 laser linewidth
+=======
+gammalQ = 2*sc.pi*0.01 #1762 laser linewidth
+>>>>>>> 88765bd56ff9d32f9a1ed17b34afd7ec6b4e9892
 
 
 ##Initial state of system  
@@ -79,6 +87,7 @@ output = mesolve(H0, psi0, tlist, c_ops_list, [sig44], {},options=Options(nsteps
 
 
 fig, ax = plt.subplots(figsize=(8,5))
+
 ax.plot(tlist, output.expect[0], label="D5/2 State Prob")
 #ax.plot(tlist, output.expect[1], label="Atom excited state")
 ax.legend()
@@ -89,3 +98,4 @@ ax.set_title('1762 nm Rabi oscillations');
 #Save graph data
 output_data = np.vstack((tlist, output.expect[0])) # join time and expt˓→data
 file_data_store('G:\\Shared drives\\Ions\\03 - Projects\\Current Projects\\Optical Qubit in Barium\\614 LED repumping data\\Spectroscopy Runs\MarchW2\\fit2.dat', output_data.T, numtype="real") # Note the .T for transpose!
+
