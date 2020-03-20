@@ -22,7 +22,7 @@ us = 1*10**-6
 #Laser Detunings -2*sc.pi*
 Deltag = 2*sc.pi*0 #detuning of 493 laser
 Deltar = 2*sc.pi*0#detuning of 650 laser
-DeltaQ= -2*sc.pi*0.5#detuning of 1762 laser
+DeltaQ= -2*sc.pi*0.0#detuning of 1762 laser
 
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
@@ -37,7 +37,7 @@ gamma41 =  2*sc.pi*10.1*10**-9 #Decay rate of |4> to |1> used a lifetime of 31.2
 #Laser Linewidths
 gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
-gammalQ = 2*sc.pi*0.1 #1762 laser linewidth
+gammalQ = 2*sc.pi*0.01 #1762 laser linewidth
 
 
 ##Initial state of system  
@@ -79,9 +79,8 @@ output = mesolve(H0, psi0, tlist, c_ops_list, [sig44], {},options=Options(nsteps
 
 
 fig, ax = plt.subplots(figsize=(8,5))
-ax.plot(tlist, output.expect[0], label="Cavity")
-ax.plot(tlist, output.expect[1], label="Atom excited state")
+ax.plot(tlist, output.expect[0], label="")
 ax.legend()
-ax.set_xlabel('Time')
-ax.set_ylabel('Occupation probability')
-ax.set_title('Vacuum Rabi oscillations');
+ax.set_xlabel('Time [us]')
+ax.set_ylabel('Shelved Occupation probability')
+ax.set_title('');
