@@ -61,7 +61,7 @@ DeltaQ= -2*sc.pi*1 #detuning of 1762 laser
 #Rabi Frequnecies
 Om12 = 2*sc.pi*0 #Rabi frequency of |1> to |2> 
 Om23 = 2*sc.pi*0 #Rabi frequency of |2> to |3>
-Om14 = 2*sc.pi*0.1 #Rabi frequency of |1> to |4>
+Om14 = 2*sc.pi*0.0105 #Rabi frequency of |1> to |4>
 
 #Decay rates
 gamma21 =  0#2*sc.pi*15.1*MHz #Decay rate of |2> to |1>
@@ -71,7 +71,7 @@ gamma41 =  2*sc.pi*10.1*10**-9 #Decay rate of |4> to |1> used a lifetime of 31.2
 #Laser Linewidths
 gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
-gammalQ = 2*sc.pi*0.0002 #1762 laser linewidth
+gammalQ = 2*sc.pi*0.002 #1762 laser linewidth
 
 #Operators between |n> and |m> 
 sig11 = basis(4,0) * basis(4,0).dag()
@@ -106,7 +106,7 @@ Clg = np.sqrt(2*gammalg) * sig11 #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * sig33 #From 650 laser linewidth
 ClQ = np.sqrt(2*gammalQ) * sig44 #From 1762 laser linewidth
 
-singlePlot = 0
+singlePlot = 1
 
 if singlePlot == 1:
     start_time = time.time()
