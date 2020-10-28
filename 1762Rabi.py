@@ -39,7 +39,6 @@ gammalg = 0#2*sc.pi*2*MHz #493 laser linewidth
 gammalr = 0#2*sc.pi*2*MHz #650 laser linewidth
 gammalQ = 2*sc.pi*0.002 #1762 laser linewidth
 
-
 ##Initial state of system  
 psi0 = basis(4,0)
 tlist = np.linspace(0,350,500)
@@ -88,6 +87,7 @@ ax.set_ylabel('Occupation probability')
 ax.set_title('1762 nm Rabi oscillations');
 
 #Save graph data
-output_data = np.vstack((tlist, output.expect[0])) # join time and expt˓→data
-file_data_store('G:\\Shared drives\\Ions\\Ion Data\\1762 Rabi Data\\June\\fit3.dat', output_data.T, numtype="real") # Note the .T for transpose!
+#output_data = np.vstack((tlist, output.expect[0])) # join time and expt˓→data
+#file_data_store('G:\\Shared drives\\Ions\\03 - Projects\\Current Projects\\Optical Qubit in Barium\\614 LED repumping data\\Spectroscopy Runs\MarchW2\\fit2.dat', output_data.T, numtype="real") # Note the .T for transpose!
+>>>>>>> 00f1ea940dea67976249acd61c92ad9c0a55468a
 
