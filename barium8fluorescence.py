@@ -34,15 +34,15 @@ Omgsp = 2*sc.pi*0 #Rabi frequrency of |1> to |4>
 Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 #Omr = 2*sc.pi*5 #Rabi frequrency of 2P1/2 to 2D3/2
-Omrpi = 2*sc.pi*9 #Rabi frequrency of |6> to |3> and |7> to |4>
-Omrsp = 2*sc.pi*9#Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*9 #Rabi frequrency of |7> to |3> and |8> to |4>
+Omrpi = 2*sc.pi*0.0001 #Rabi frequrency of |6> to |3> and |7> to |4>
+Omrsp = 2*sc.pi*5#Rabi frequrency of |5> to |3> and |6> to |4>
+Omrsm = 2*sc.pi*5 #Rabi frequrency of |7> to |3> and |8> to |4>
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
 gammalg = 2*sc.pi*1 #493 laser linewidth
 gammalr = 2*sc.pi*1 #650 laser linewidth
-B = 5/10000 #B-field in Tesla
+B = 2/10000 #B-field in Tesla
 #tlist = np.linspace(0, 0.25, 10) #List of points for plotting purposes
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz
 
@@ -159,6 +159,8 @@ yr = []
 xr = []
 yg = []
 xg = []
+PB = []
+xB = []
 x = []
 y = []
 
@@ -170,7 +172,7 @@ line1, = ax.plot(x, y, 'b-')
 
 Deltag = -2*sc.pi*50
 while Deltag < 2*sc.pi*50:
-    Deltar = +2*sc.pi*12 #detuning of 650 laser
+    Deltar = +2*sc.pi*5 #detuning of 650 laser
     H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt1 = expect(sig44, final_state)  #Gives expectation value of solved Hamiltonian for excited state
@@ -185,9 +187,9 @@ plt.xlabel('Δg [MHz]')
 plt.ylabel('Population in |3>+|4>')
 plt.show()
 
-Deltar =  -2*sc.pi*120
+Deltar =  -2*sc.pi*80
 while Deltar < 2*sc.pi*80:
-    Deltag =  -2*sc.pi*40
+    Deltag = -2*sc.pi*30
     H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
     final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
     fexpt1 = expect(sig44, final_state)  #Gives expectation value of solved Hamiltonian for excited state
@@ -203,7 +205,26 @@ plt.xlabel('Δr [MHz]')
 plt.ylabel('Population in |3>+|4>')
 plt.show()
 
-print(wB)
+Deltar = +2*sc.pi*5 #detuning of 650 laser
+Deltag = -2*sc.pi*30 #detuning of 493 laser
+B = 0/10000 #B-field in Tesla
+while B < 10/10000:
+    wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz
+    H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
+    final_state = steadystate(H, c_ops) #Solve Hamiltonian for t = infinity
+    fexpt1 = expect(sig44, final_state)  #Gives expectation value of solved Hamiltonian for excited state
+    fexpt2 = expect(sig33, final_state)
+    FexptPtot = fexpt1 + fexpt2    
+    PB.append(FexptPtot)
+    xB.append(B*10000)
+    B += 1/10000
+    
+plt.plot(xB, PB, 'k-')
+plt.xlabel('B [T]')
+plt.ylabel('Population in |3>+|4>')
+plt.show()
+
+#print(wB)
 #thefile = open('G:\\Shared drives\\Ions\\Ion Data\\Spectroscopy Scans\\Theory Scans\\DeltaR.dat', 'w')
 #for item in xr:
 #  thefile.write("%s\n" % item)
