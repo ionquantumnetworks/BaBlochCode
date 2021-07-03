@@ -28,14 +28,15 @@ qutip.settings.has_mkl=False
 #Time units will be in us
 Deltag = -2*sc.pi*20 #detuning of 493 laser
 Deltar = 2*sc.pi*25#detuning of 650 laser
+DeltarEx = 2*sc.pi*(25-200)#detuning of 650 excite laser
 #493 beams
-Omgpi = 2*sc.pi*30 #Rabi frequrency of |1> to |3> and |2> to |4>
+Omgpi = 2*sc.pi*30#/(sqrt(100000)) #Rabi frequrency of |1> to |3> and |2> to |4>
 Omgsp = 2*sc.pi*0#Rabi frequrency of |1> to |4>
 Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3> 
 #650 beams
-Omrpi = 2*sc.pi*20#Rabi frequrency of |6> to |3> and |7> to |4>
-Omrsp = 2*sc.pi*20 #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*0#Rabi frequrency of |7> to |3> and |8> to |4> 
+Omrpi = 2*sc.pi*20#/(sqrt(100000))#Rabi frequrency of |6> to |3> and |7> to |4>
+Omrsp = 2*sc.pi*20#/(sqrt(100000)) #Rabi frequrency of |5> to |3> and |6> to |4>
+Omrsm = 2*sc.pi*20/(sqrt(1000))#Rabi frequrency of |7> to |3> and |8> to |4> 
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
@@ -124,7 +125,7 @@ H38 = 0*sig38
 H84 = (Omrsm/2)*sig84
 H48 = ((Omrsm*1j)/2)*sig48
 #Hamiltonian of system RWA
-H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (Deltar+(6*wB/5))*sig88)
+H = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 #H = H11+H22+H33+H44+H55+H66+H77+H88+H13+H31+H14+H41+H23+H32+H24+H42+H53+H35+H54+H45+H64+H46+H73+H37+H74+H47+H83+H38+H84+H48
 
 #Initial state of system
@@ -167,7 +168,7 @@ c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 #Excited = fexpt33 + fexpt44
 #print(Excited)
 
-times = np.linspace(0, 1.200, 5000)
+times = np.linspace(0, 5.200, 5000)
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
