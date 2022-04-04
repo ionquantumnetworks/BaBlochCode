@@ -28,22 +28,22 @@ qutip.settings.has_mkl=False
 #Units of frequnecies are in MHz
 #Time units will be in us
 #Detunigs
-Deltag = -2*sc.pi*100 #detuning of 493 laser
-Deltar = 2*sc.pi*10#detuning of 650 laser
+Deltag = -2*sc.pi*20 #detuning of 493 laser
+Deltar = 2*sc.pi*0#detuning of 650 laser
 #493 beams
 Omgpi = 2*sc.pi*20#Rabi frequrency of |1> to |3> and |2> to |4>
 Omgsp = 2*sc.pi*0 #Rabi frequrency of |1> to |4>
 Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 Omrpi = 2*sc.pi*00 #Rabi frequrency of |6> to |3> and |7> to |4>
-Omrsp = 2*sc.pi*25 #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*25 #Rabi frequrency of |7> to |3> and |8> to |4> 
+Omrsp = 2*sc.pi*5 #Rabi frequrency of |5> to |3> and |6> to |4>
+Omrsm = 2*sc.pi*5 #Rabi frequrency of |7> to |3> and |8> to |4> 
 #Linewidths
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
-gammalg = 2*sc.pi*5 #493 laser linewidth
-gammalr = 2*sc.pi*5 #650 laser linewidth
-B = 5/10000 #B-field in Tesla
+gammalg = 2*sc.pi*3 #493 laser linewidth
+gammalr = 2*sc.pi*3 #650 laser linewidth
+B = 5.23/10000 #B-field in Tesla
 #tlist = np.linspace(0, 0.06, 2000) #List of points for plotting purposes
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz Bohr mag = 9.274*10^-24 J/T
 

@@ -206,7 +206,7 @@ plt.xlabel('Δr [MHz]')
 plt.ylabel('Population in |3>+|4>')
 plt.show()
 
-Deltar = +2*sc.pi*30 #detuning of 650 laser
+Deltar = +2*sc.pi*10 #detuning of 650 laser
 Deltag = -2*sc.pi*25 #detuning of 493 laser
 B = 0/10000 #B-field in Tesla
 while B < 10/10000:
