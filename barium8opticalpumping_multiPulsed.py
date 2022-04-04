@@ -170,22 +170,11 @@ Clg = np.sqrt(2*gammalg) * (sig11 + sig22) #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * (sig55 + sig66 + sig77 + sig88) #From 650 laser linewidth
 c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 
-#Solutions
-#x = 1000000000
-#n = mesolve(H, psi0, tlist, c_ops, e_ops)#, options=Options(nsteps=x)) #Solves Hamiltionian at point on tlist
-#plot_expectation_values(n, show_legend=True,figsize=(8, 8))
-#print(psi0)
-#final_state = steadystate(H, c_ops)
-#fexpt11 = expect(sig11, final_state)
-#fexpt22 = expect(sig22, final_state)
-#print(fexpt11+fexpt22)
-#fexpt33 = expect(sig33, final_state)
-#fexpt44 = expect(sig44, final_state)
-#Excited = fexpt33 + fexpt44
-#print(Excited)
-
-times = np.linspace(0.9,1.2,10000)
+times = np.linspace(0.9,1.3,400)
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
+totalPhoton = sum(result.expect[2]+result.expect[3])
+goodPhoton = sum(result.expect[3])
+badPhoton =sum(result.expect[2])
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
 ax.plot((result.times)*1000, (result.expect[2]+result.expect[3]));#P-levels
@@ -228,19 +217,6 @@ print("6:" + str(result.expect[5][-1]))
 print("7:" + str(result.expect[6][-1]))
 print("8:" + str(result.expect[7][-1]))
 
-#final_state = steadystate(H, c_ops)
-#fexpt1 = expect(sig11, final_state)
-#fexpt2 = expect(sig22, final_state)
-#fexpt3 = expect(sig33, final_state)
-#fexpt4 = expect(sig44, final_state)
-#fexpt5 = expect(sig55, final_state)
-#fexpt6 = expect(sig66, final_state)
-#fexpt7 = expect(sig77, final_state)
-#fexpt8 = expect(sig88, final_state)
-#PopinP = fexpt3 + fexpt4
-#print(PopinP)
-#print(fexpt5,fexpt6,fexpt7,fexpt8)
-
 #Save graph data
 #output_data = np.vstack((times*1000, (result.expect[2]+result.expect[3]))) # join time and expt˓→data
 #file_data_store('E:\\IonTrapData\\DPrep Photon Shapes\\493PhotonShape.dat', output_data.T, numtype="real") # Note the .T for transpose!
@@ -268,7 +244,43 @@ print(maxn-minn)
 #plots histogram of data
 fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
-ax1.plot((result.times)*1000,Photon*510)
-ax1.set_xlim([900,1200])
+ax1.plot((result.times)*1000,Photon*530)
+ax1.plot(times*1000,Ht_coeff(times,1)*100)
+ax1.set_xlim([900,1300])
 ax1.set_ylabel('Occurances')
-ax1.set_xlabel('Time (mu) = ns I think')
+ax1.set_xlabel('Time (ns)')
+
+#photon analysis
+FGP = goodPhoton/totalPhoton
+FBP = badPhoton/totalPhoton
+print('Fraction Good Photon ' + str(FGP))
+print('Fraction Bad Photon ' + str(FBP))
+
+#Fidelities
+Target = (basis(4,0)+basis(4,3)).unit()
+TargetDensity = Target*Target.dag()
+#print(Target)
+
+Psi1 = basis(4,0)
+Psi2 = basis(4,1)
+Psi3 = basis(4,2)
+Psi4 = basis(4,3)
+
+badState = (basis(4,1)+basis(4,2)).unit()
+badDensity = badState*badState.dag()
+FinalDensity = (FGP*TargetDensity)+(FBP*badDensity)
+
+FidFinal = Target.dag()*(FinalDensity)*Target
+print(FidFinal)
+
+N =2
+lbls_list = [[str(d) for d in range(N)], ["u", "d"]]
+
+xlabels = []
+
+for inds in tomography._index_permutations([len(lbls) for lbls in lbls_list]):
+     xlabels.append("".join([lbls_list[k][inds[k]]
+                            for k in range(len(lbls_list))]))
+
+fig, ax = matrix_histogram(FinalDensity,xlabels, xlabels) # xlabels=xlabels, ylabels=xlabels)
+plt.show()
