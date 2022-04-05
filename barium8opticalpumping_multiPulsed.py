@@ -180,12 +180,22 @@ Clg = np.sqrt(2*gammalg) * (sig11 + sig22) #From 493 laser linewidth
 Clr = np.sqrt(2*gammalr) * (sig55 + sig66 + sig77 + sig88) #From 650 laser linewidth
 c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 
-times = np.linspace(-2,1.3,400)
+
+startT = -2
+stopT = 1.3
+points = (stopT - startT)*1000 #ensures 1 ns point spaceing
+times = np.linspace(startT,stopT, int(points))
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
-#the following needs to be set to sum up only over the photon - currently summing over all entire time
-totalPhoton = sum(result.expect[2]+result.expect[3])
-goodPhoton = sum(result.expect[3])
-badPhoton =sum(result.expect[2])
+#summs all the data over all time
+allCounts = result.expect[2]+result.expect[3]
+allGood = result.expect[3]
+allBad = result.expect[2]
+#pulls out and sums the last 400 points - as each point is set up to be 1 ns this is 900 ns - 1300 ns corrisponding to the photon
+totalPhoton = sum(allCounts[-400:])
+goodPhoton = sum(allGood[-400:])
+badPhoton =sum(allBad[-400:])
+
+#various plotting
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
 ax.plot((result.times)*1000, (result.expect[2]+result.expect[3]));#P-levels
@@ -257,7 +267,7 @@ fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
 ax1.plot((result.times)*1000,Photon*530)
 ax1.plot(times*1000,Ht_coeff(times,1)*100)
-ax1.set_xlim([-2000,1300])
+ax1.set_xlim([900,1300])
 ax1.set_ylabel('Occurances')
 ax1.set_xlabel('Time (ns)')
 
