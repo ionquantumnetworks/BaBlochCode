@@ -268,7 +268,7 @@ print(maxn-minn)
 #plots histogram of data
 fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
-ax1.plot((result.times)*1000,Photon*510)
+ax1.plot((result.times)*1000,Photon*560)
 ax1.set_xlim([900,1200])
 ax1.set_ylabel('Occurances')
 ax1.set_xlabel('Time (mu) = ns I think')
