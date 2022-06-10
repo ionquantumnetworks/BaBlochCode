@@ -45,6 +45,11 @@ gammalg = 2*sc.pi*3#493 laser linewidth
 gammalr = 2*sc.pi*3#650 laser linewidth
 B = 5.23/10000 #B-field in Tesla
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz Bohr mag = 9.274*10^-24 J/T
+#polarisation mising
+#in terms of Rabi (ie 0.1: the bad polarisation results in the wrong transition to occur with 0.1 Rabi of the correct one)
+mixc = 0.0 #mixing in the cleanupo pulse
+mixp = 0.0 #mixing in the prep pulse
+mixe = 0.0 #mixing in the clean up pulse
 
 #Operators between |n> and |m> sig(row-col)
 sig11 = basis(8,0) * basis(8,0).dag()
@@ -127,8 +132,8 @@ H84 = (Omrsm/2)*sig84
 H48 = ((Omrsm*1j)/2)*sig48
 #Hamiltonian of system RWA
 #H0 = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*0)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*0)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*0)*sig73 + ((2/R6)*0)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*0)*sig84 + (DeltarEx+(6*wB/5))*sig88)
-Hp = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*0)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*0)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*0)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*0)*sig84 + (DeltarEx+(6*wB/5))*sig88)
-Hp2 = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*0)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*0)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*0)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*0)*sig84 + (DeltarEx+(6*wB/5))*sig88)
+Hp = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*mixp*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*mixp*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*mixp*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*mixp*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
+Hp2 = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*(mixc*Omrsm))*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*(mixc*Omrsm))*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)**(mixc*Omrsm))*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*(mixc*Omrsm)*sig84) + (DeltarEx+(6*wB/5))*sig88)
 He = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*0)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 #Ht = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 #H = H11+H22+H33+H44+H55+H66+H77+H88+H13+H31+H14+H41+H23+H32+H24+H42+H53+H35+H54+H45+H64+H46+H73+H37+H74+H47+H83+H38+H84+H48
@@ -136,7 +141,7 @@ He = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig
 #Time dependence of the drive
 def Ht_coeffPrep(t,args):
     on = -10.0
-    pulse = 1
+    pulse = 4
     edge = 150
     off = on + pulse
     y4 = 0.5*(np.tanh(edge*(t-on))-np.tanh(edge*(t-off)))
@@ -206,6 +211,14 @@ windowStop = windowStart + windowWidth
 totalPhoton = sum(allCounts[windowStart:windowStop])
 goodPhoton = sum(allGood[windowStart:windowStop])
 badPhoton =sum(allBad[windowStart:windowStop])
+#scale factor to scale qutip data to real-life data
+photpwind = (gammag*10**-3)*0.75 #expected 493 photons per ns given a population = 1
+br = 0.75 #branching
+col = 0.08 #0.6 NA into fiber
+qe = 0.4 #APD
+coup = 0.35 #estimated coupling
+runs = 625000 #total number of experiment runs
+scale = photpwind*totalPhoton*runs*coup*qe*col*0.75# (br*col*qe*coup*runs)/totalPhoton
 
 #various plotting
 fig, ax = subplots()
@@ -232,7 +245,7 @@ ax.set_xlabel('Time [ns]');
 ax.set_ylabel('Population');
 ax.legend(("3","4"));
 show()
-Photon = ((result.expect[2]+result.expect[3]))
+Photon = (0.75*(result.expect[2]+result.expect[3]))
 fig, ax = subplots()
 ax.plot((result.times)*1000,Photon);#P-levels
 ax.set_xlabel('Time [ns]');
@@ -277,9 +290,9 @@ print(maxn-minn)
 #plots histogram of data
 fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
-ax1.plot((result.times)*1000,Photon*530)
-ax1.plot((result.times)*1000, (result.expect[2])*530)
-ax1.plot(times*1000,Ht_coeff(times,1)*100)
+ax1.plot((result.times)*1000,Photon*scale)
+ax1.plot((result.times)*1000, 0.75*(result.expect[2])*scale)
+ax1.plot(times*1000,Ht_coeffEx(times,1)*100)
 ax1.set_xlim([900,1300])
 ax1.set_ylabel('Occurances')
 ax1.set_xlabel('Time (ns)')

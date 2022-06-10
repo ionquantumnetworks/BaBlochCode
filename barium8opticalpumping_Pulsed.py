@@ -28,8 +28,8 @@ qutip.settings.has_mkl=False
 #Units of frequnecies are in MHz
 #Time units will be in us
 Deltag = -2*sc.pi*20 #detuning of 493 laser
-Deltar = 2*sc.pi*25#detuning of 650 laser
-DeltarEx = 2*sc.pi*(0)#detuning of 650 excite laser
+Deltar = 2*sc.pi*5#detuning of 650 laser
+DeltarEx = 2*sc.pi*(5)#detuning of 650 excite laser
 #493 beams
 Omgpi = 2*sc.pi*0#/(sqrt(100000)) #Rabi frequrency of |1> to |3> and |2> to |4>
 Omgsp = 2*sc.pi*0#Rabi frequrency of |1> to |4>
@@ -37,8 +37,7 @@ Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 Omrpi = 2*sc.pi*0#/(sqrt(100000))#Rabi frequrency of |6> to |3> and |7> to |4>
 Omrsp = 2*sc.pi*0#/(sqrt(100000)) #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*12#(np.sqrt(1000))#Rabi frequrency of |7> to |3> and |8> to |4> 
-#detunings
+Omrsm = 2*sc.pi*15
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
 gammalg = 2*sc.pi*2#493 laser linewidth
@@ -132,8 +131,8 @@ Ht = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Om
 
 #Time dependence of the drive
 def Ht_coeff(t,args):
-    on = 0.946
-    pulse = 0.3
+    on = 1.00#0.946
+    pulse = 0.05
     edge = 150
     off = on + pulse
     y4 = 0.5*(np.tanh(edge*(t-on))-np.tanh(edge*(t-off)))
@@ -184,7 +183,7 @@ c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 #Excited = fexpt33 + fexpt44
 #print(Excited)
 
-times = np.linspace(0.9,1.2,10000)
+times = np.linspace(0.975,1.2,10000)
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
 fig, ax = subplots()
 ax.plot((result.times)*1000, (result.expect[0]+result.expect[1]));#Ground State
@@ -228,6 +227,10 @@ print("6:" + str(result.expect[5][-1]))
 print("7:" + str(result.expect[6][-1]))
 print("8:" + str(result.expect[7][-1]))
 
+
+print(sum(result.expect[3]))
+print(sum(result.expect[2]))
+print("Fidelity: " + str(sum(result.expect[3])/(sum(result.expect[3])+sum(result.expect[2]))))
 #final_state = steadystate(H, c_ops)
 #fexpt1 = expect(sig11, final_state)
 #fexpt2 = expect(sig22, final_state)
@@ -249,7 +252,7 @@ print("8:" + str(result.expect[7][-1]))
 #  thefile.write("%s\n" % item)
 #thefile.close()
 
-with h5py.File('000005628-PhotonShape.h5', 'r') as f:
+with h5py.File('H:/Lab Code/BaBlochCode/000006318-PhotonShapeTempMeasure.h5', 'r') as f:
     # List all groups that could be imported
     print("Keys: %s" % f.keys())
     a_group_key = list(f.keys())[0]
@@ -268,7 +271,7 @@ print(maxn-minn)
 #plots histogram of data
 fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
-ax1.plot((result.times)*1000,Photon*560)
+ax1.plot((result.times)*1000,Photon*7000)
 ax1.set_xlim([900,1200])
 ax1.set_ylabel('Occurances')
 ax1.set_xlabel('Time (mu) = ns I think')
