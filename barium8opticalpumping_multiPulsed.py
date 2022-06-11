@@ -29,7 +29,7 @@ qutip.settings.has_mkl=False
 #Time units will be in us
 Deltag = -2*sc.pi*20 #detuning of 493 laser
 Deltar = 2*sc.pi*10#detuning of 650 laser
-DeltarEx = 2*sc.pi*(0)#detuning of 650 excite laser
+DeltarEx = -2*sc.pi*(5)#detuning of 650 excite laser
 #493 beams
 Omgpi = 2*sc.pi*15#/(sqrt(100000)) #Rabi frequrency of |1> to |3> and |2> to |4>
 Omgsp = 2*sc.pi*0#Rabi frequrency of |1> to |4>
@@ -37,19 +37,19 @@ Omgsm = 2*sc.pi*0 #Rabi frequrency of |2> to |3>
 #650 beams
 Omrpi = 2*sc.pi*7#/(sqrt(100000))#Rabi frequrency of |6> to |3> and |7> to |4>
 Omrsp = 2*sc.pi*7#/(sqrt(100000)) #Rabi frequrency of |5> to |3> and |6> to |4>
-Omrsm = 2*sc.pi*12#(np.sqrt(1000))#Rabi frequrency of |7> to |3> and |8> to |4> 
+Omrsm = 2*sc.pi*15#(np.sqrt(1000))#Rabi frequrency of |7> to |3> and |8> to |4> 
 #detunings
 gammag =  2*sc.pi*15.1 #Decay rate of 2P1/2 to 2S1/2
 gammar =  2*sc.pi*5.3 #Decay rate of 2P1/2 to 2D3/2
 gammalg = 2*sc.pi*3#493 laser linewidth
-gammalr = 2*sc.pi*3#650 laser linewidth
+gammalr = 2*sc.pi*0#650 laser linewidth
 B = 5.23/10000 #B-field in Tesla
 wB = ((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz Bohr mag = 9.274*10^-24 J/T
 #polarisation mising
 #in terms of Rabi (ie 0.1: the bad polarisation results in the wrong transition to occur with 0.1 Rabi of the correct one)
-mixc = 0.0 #mixing in the cleanupo pulse
-mixp = 0.0 #mixing in the prep pulse
-mixe = 0.0 #mixing in the clean up pulse
+mixc = 0.00 #mixing in the cleanupo pulse
+mixp = 0.05 #mixing in the prep pulse
+mixe = 0.0#mixing in the excite up pulse
 
 #Operators between |n> and |m> sig(row-col)
 sig11 = basis(8,0) * basis(8,0).dag()
@@ -134,31 +134,32 @@ H48 = ((Omrsm*1j)/2)*sig48
 #H0 = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*0)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*0)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*0)*sig73 + ((2/R6)*0)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*0)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 Hp = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*mixp*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*mixp*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*mixp*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*mixp*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 Hp2 = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*(mixc*Omrsm))*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*(mixc*Omrsm))*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)**(mixc*Omrsm))*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*(mixc*Omrsm)*sig84) + (DeltarEx+(6*wB/5))*sig88)
-He = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*0)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
+He = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)**mixe*Omrsm)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*mixe*Omrsm)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*mixe*Omrsm)*sig53 + (DeltarEx-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*mixe*Omrsm)*sig64 + (DeltarEx-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*0)*sig74 + (DeltarEx+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
+#He = ((Deltag-wB)*sig11 + ((-2/R3)*0)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*0)*sig24 + ((-2/R3)*0)*sig31 + (-wB/3)*sig33 + ((1j/R2)*0)*sig35 + ((2/R6)*0)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*0)*sig42 + (wB/3)*sig44 + ((1j/R6)*0)*sig46 + ((2/R6)*0)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*0)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*0)*sig63 + ((-1j/R6)*0)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*0)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 #Ht = ((Deltag-wB)*sig11 + ((-2/R3)*Omgpi)*sig13 + (Deltag+wB)*sig22 + ((2/R3)*Omgpi)*sig24 + ((-2/R3)*Omgpi)*sig31 + (-wB/3)*sig33 + ((1j/R2)*Omrsp)*sig35 + ((2/R6)*Omrpi)*sig36 + ((-1j/R6)*Omrsm)*sig37 + ((2/R3)*Omgpi)*sig42 + (wB/3)*sig44 + ((1j/R6)*Omrsp)*sig46 + ((2/R6)*Omrpi)*sig47 + ((-1j/R2)*Omrsm)*sig48 + ((-1j/R2)*Omrsp)*sig53 + (Deltar-(6*wB/5))*sig55 + ((2/R6)*Omrpi)*sig63 + ((-1j/R6)*Omrsp)*sig64 + (Deltar-(2*wB/5))*sig66 + ((1j/R6)*Omrsm)*sig73 + ((2/R6)*Omrpi)*sig74 + (Deltar+(2*wB/5))*sig77 + ((1j/R2)*Omrsm)*sig84 + (DeltarEx+(6*wB/5))*sig88)
 #H = H11+H22+H33+H44+H55+H66+H77+H88+H13+H31+H14+H41+H23+H32+H24+H42+H53+H35+H54+H45+H64+H46+H73+H37+H74+H47+H83+H38+H84+H48
 
 #Time dependence of the drive
 def Ht_coeffPrep(t,args):
-    on = -10.0
-    pulse = 4
+    on = -15.0
+    pulse = 8
     edge = 150
     off = on + pulse
     y4 = 0.5*(np.tanh(edge*(t-on))-np.tanh(edge*(t-off)))
     return y4
 
 def Ht_coeffPrep2(t,args):
-    on = -3
-    pulse = 0.5
+    on = -6
+    pulse = 1
     edge = 150
     off = on + pulse
     y4 = 0.5*(np.tanh(edge*(t-on))-np.tanh(edge*(t-off)))
     return y4
 
 def Ht_coeffEx(t,args):
-    on = 0.946
-    pulse = 0.3
-    edge = 150
+    on = 0.994
+    pulse = 0.2
+    edge = 200
     off = on + pulse
     y4 = 0.5*(np.tanh(edge*(t-on))-np.tanh(edge*(t-off)))
     return y4
@@ -195,8 +196,8 @@ Clr = np.sqrt(2*gammalr) * (sig55 + sig66 + sig77 + sig88) #From 650 laser linew
 c_ops = [C41,C42,C32,C31,C35,C36,C37,C46,C47,C48,Clg,Clr]
 
 
-startT = -10
-stopT = 1.3
+startT = -15
+stopT = 1.1 #stop time for calculating fidelity
 points = (stopT - startT)*1000 #ensures 1 ns point spaceing
 times = np.linspace(startT,stopT, int(points))
 result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig77,sig88])
@@ -204,21 +205,21 @@ result = mesolve(H, psi0, times, c_ops, [sig11,sig22,sig33,sig44,sig55,sig66,sig
 allCounts = result.expect[2]+result.expect[3]
 allGood = result.expect[3]
 allBad = result.expect[2]
-windowStart = int(points)-400 #should be at 900 ns
-windowWidth = 100
+windowStart = int(points)-500 #should be at 900 ns
+windowWidth = 500
 windowStop = windowStart + windowWidth
 #pulls out and sums the last 100 points - as each point is set up to be 1 ns this is 900 ns - 1300 ns corrisponding to the photon
 totalPhoton = sum(allCounts[windowStart:windowStop])
 goodPhoton = sum(allGood[windowStart:windowStop])
 badPhoton =sum(allBad[windowStart:windowStop])
 #scale factor to scale qutip data to real-life data
-photpwind = (gammag*10**-3)*0.75 #expected 493 photons per ns given a population = 1
+photpwind = (gammag*10**-3) #expected 493 photons per ns given a population = 1 (*10**6 for gamma in ns is *10**-3)
 br = 0.75 #branching
 col = 0.08 #0.6 NA into fiber
 qe = 0.4 #APD
-coup = 0.35 #estimated coupling
-runs = 625000 #total number of experiment runs
-scale = photpwind*totalPhoton*runs*coup*qe*col*0.75# (br*col*qe*coup*runs)/totalPhoton
+coup = 0.20 #estimated coupling
+runs = 557634 #total number of experiment runs
+scale = (runs/1190)#photpwind*totalPhoton*runs*coup*qe*col*0.75# (br*col*qe*coup*runs)/totalPhoton
 
 #various plotting
 fig, ax = subplots()
@@ -245,7 +246,7 @@ ax.set_xlabel('Time [ns]');
 ax.set_ylabel('Population');
 ax.legend(("3","4"));
 show()
-Photon = (0.75*(result.expect[2]+result.expect[3]))
+Photon = ((result.expect[2]+result.expect[3]))*0.75
 fig, ax = subplots()
 ax.plot((result.times)*1000,Photon);#P-levels
 ax.set_xlabel('Time [ns]');
@@ -271,7 +272,7 @@ print("8:" + str(result.expect[7][-1]))
 #  thefile.write("%s\n" % item)
 #thefile.close()
 
-with h5py.File('000005628-PhotonShape.h5', 'r') as f:
+with h5py.File('000007129-PhotonShapeTempMeasure.h5', 'r') as f:
     # List all groups that could be imported
     print("Keys: %s" % f.keys())
     a_group_key = list(f.keys())[0]
@@ -291,9 +292,11 @@ print(maxn-minn)
 fig, ax1 = plt.subplots()
 ax1.stairs(TimeData,y1,hatch='//')
 ax1.plot((result.times)*1000,Photon*scale)
-ax1.plot((result.times)*1000, 0.75*(result.expect[2])*scale)
+ax1.plot((result.times)*1000, (0.75*result.expect[2])*scale)
+ax1.plot((result.times)*1000, (0.75*result.expect[3])*scale)
 ax1.plot(times*1000,Ht_coeffEx(times,1)*100)
-ax1.set_xlim([900,1300])
+ax1.set_xlim([990,1150])
+ax1.set_ylim([0,120])
 ax1.set_ylabel('Occurances')
 ax1.set_xlabel('Time (ns)')
 
