@@ -54,23 +54,39 @@ line1, = ax.plot(x, y, 'b-')
 #Input Initial Values Here:
     #Units of frequnecies are in MZ
     #Time units will be in us
+#Detunings
 DeltaBlue = (2*sc.pi)*5 #detuning of 493 laser
 DeltaRed = (2*sc.pi)*5 #detuning of 650 laser
+DeltaLong= (2*sc.pi)*5 #detuning of 1762 laser
+
 #493 beams
 #Omg = 2*sc.pi*5 #Rabi frequrency of 2S1/2 to 2P1/2 
 BluePiLight = 2*sc.pi*5 #Rabi frequrency of |1> to |3> and |2> to |4>
 BlueSigmaPlusLight = 2*sc.pi*5 #Rabi frequrency of |1> to |4>
 BlueSigmaMinusLight = 2*sc.pi*5 #Rabi frequrency of |2> to |3>
+
 #650 beams
 #Omr = 2*sc.pi*5 #Rabi frequrency of 2P1/2 to 2D3/2
 RedPiLight = 2*sc.pi*5 #Rabi frequrency of |6> to |3> and |7> to |4>
 RedSigmaPlusLight = 2*sc.pi*5 #Rabi frequrency of |5> to |3> and |6> to |4>
 RedSigmaMinusLight = 2*sc.pi*5 #Rabi frequrency of |7> to |3> and |8> to |4>
-#detunings
-GammaBlue =  2*sc.pi*20 #Decay rate of 2P1/2 to 2S1/2
-GammaRed =  2*sc.pi*5 #Decay rate of 2P1/2 to 2D3/2
+
+#1762 beams
+#OmL = 2*sc.pi*5 #Rabi frequrency of 2S1/2 to 2D3/2
+LongPiLight = 2*sc.pi*5 #Rabi frequrency of |6> to |1> and |7> to |2>
+LongSigmaPlusLight = 2*sc.pi*5 #Rabi frequrency of |7> to |1> and |8> to |2>
+LongSigmaMinusLight = 2*sc.pi*5 #Rabi frequrency of |6> to |2> and |5> to |1>
+#Decay Rates
+#Decay Rates
+SBlue=0.25
+SRed=1
+SLong=1
+GammaBlue = BluePiLight/SBlue #Decay rate of 2P1/2 to 2S1/2
+GammaRed =  RedPiLight/SRed #Decay rate of 2P1/2 to 2D3/2
+GammaLong= LongPiLight/SLong #Decay rate of 2S1/2 to 2D3/2
 GammaLaserBlue = 2*sc.pi*0 #493 laser linewidth
 GammaLaserRed = 2*sc.pi*0 #650 laser linewidth
+GammaLaserLong= 2*sc.pi*0 #1762 laser linewidth
 B = 60/10000 #B-field in Tesla
 wB = 2*sc.pi*5 #((sc.value('Bohr magneton')*B)/(sc.hbar))/1000000 #Larmor frequency in 2pi*MHz
 Alpha=30 #Degrees angle of polarization vector. (Sin(Alpha),0,Cos(Alpha))
@@ -156,12 +172,12 @@ H_PD=H53+H35+H63+H36+H64+H46+H73+H37+H74+H47+H84+H48
 #Hamiltonian of system RWA
 H = H_Dag+H_PS+H_PD
 
-# Hf = ((DeltaBlue-wB)*sig11 + ((-2/R3)*BluePiLight)*sig13 + (DeltaBlue+wB)*sig22 + ((2/R3)*BluePiLight)*sig24 + ((-2/R3)*BluePiLight)*sig31 + (-wB/3)*sig33 + ((1j/R2)*RedSigmaPlusLight)*sig35 + ((2/R6)*RedPiLight)*sig36 + ((-1j/R6)*RedSigmaMinusLight)*sig37 + ((2/R3)*BluePiLight)*sig42 + (wB/3)*sig44 + ((1j/R6)*RedSigmaPlusLight)*sig46 + ((2/R6)*RedPiLight)*sig47 + ((-1j/R2)*RedSigmaMinusLight)*sig48 + ((-1j/R2)*RedSigmaPlusLight)*sig53 + (DeltaRed-(6*wB/5))*sig55 + ((2/R6)*RedPiLight)*sig63 + ((-1j/R6)*RedSigmaPlusLight)*sig64 + (DeltaRed-(2*wB/5))*sig66 + ((1j/R6)*RedSigmaMinusLight)*sig73 + ((2/R6)*RedPiLight)*sig74 + (DeltaRed+(2*wB/5))*sig77 + ((1j/R2)*RedSigmaMinusLight)*sig84 + (DeltaRed+(6*wB/5))*sig88)
-# print(H)
-# print('sep')
-# print(Hf)
-# print('diff')
-# print(Hf-H)
+Hf = ((DeltaBlue-wB)*sig11 + ((-2/R3)*BluePiLight)*sig13 + (DeltaBlue+wB)*sig22 + ((2/R3)*BluePiLight)*sig24 + ((-2/R3)*BluePiLight)*sig31 + (-wB/3)*sig33 + ((1j/R2)*RedSigmaPlusLight)*sig35 + ((2/R6)*RedPiLight)*sig36 + ((-1j/R6)*RedSigmaMinusLight)*sig37 + ((2/R3)*BluePiLight)*sig42 + (wB/3)*sig44 + ((1j/R6)*RedSigmaPlusLight)*sig46 + ((2/R6)*RedPiLight)*sig47 + ((-1j/R2)*RedSigmaMinusLight)*sig48 + ((-1j/R2)*RedSigmaPlusLight)*sig53 + (DeltaRed-(6*wB/5))*sig55 + ((2/R6)*RedPiLight)*sig63 + ((-1j/R6)*RedSigmaPlusLight)*sig64 + (DeltaRed-(2*wB/5))*sig66 + ((1j/R6)*RedSigmaMinusLight)*sig73 + ((2/R6)*RedPiLight)*sig74 + (DeltaRed+(2*wB/5))*sig77 + ((1j/R2)*RedSigmaMinusLight)*sig84 + (DeltaRed+(6*wB/5))*sig88)
+print(H)
+print('sep')
+print(Hf)
+print('diff')
+print(Hf-H)
 
 
 
@@ -201,5 +217,5 @@ while DeltaRed < 2*sc.pi*40:
 plt.plot(xr, yr, 'r-')
 plt.xlabel('ΔRed [MHz]')
 plt.ylabel('Population in |3>+|4>')
+plt.title('Alpha='+ str(Alpha)+', SBlue='+str(SBlue)+', SRed='+str(SRed)+', and Blue Detuning='+str(DeltaBlue/(2*sc.pi))+'MHz')
 plt.show()
-
