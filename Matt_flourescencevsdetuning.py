@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pylab import *
 from pandas import *
-import bariumbloch as bb
+import Matt_bariumbloch as bb
 import time
 qutip.settings.has_mkl=False #I ONLY NEED THIS ON IONS COMPUTER
 
